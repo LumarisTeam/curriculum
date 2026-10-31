@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-31
+
+### Added
+
+- `Course.credit`：对齐拾光课程表 2026-09-27 新增的学分字段。解析器不产出该
+  字段；`fromJson` 接受整数、浮点与数字字符串。
+- `ComboSchedule` / `PublicScheduleTemplate` 与
+  `CourseImportResult.comboSchedule`：对齐拾光课程表 2026-09-26 的组合作息
+  导入/导出扩展，`fromJson` / `toJson` 往返不再丢失该字段。
+- `JsonMapReader.asDoubleOrNull` / `asDouble` 与 `coerceDouble`。
+
 ## [0.1.0] - 2026-09-15
 
 ### Added
@@ -41,5 +52,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 内置适配器 `XAUAT_01`（西安建筑科技大学），含两个端到端样本。
 - fixture 自动发现工具 `registerFixtureSuites()`。
 
-[Unreleased]: https://github.com/lijiajunply/curriculum/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/lijiajunply/curriculum/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/lijiajunply/curriculum/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/lijiajunply/curriculum/releases/tag/v0.1.0

@@ -20,6 +20,7 @@
 library;
 
 export 'src/exceptions.dart';
+export 'src/model/combo_schedule.dart';
 export 'src/model/course.dart';
 export 'src/model/course_config.dart';
 export 'src/model/course_import_result.dart';

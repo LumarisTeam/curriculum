@@ -47,7 +47,7 @@ dart run example/main.dart 你的课表.html --json
 
 ## 数据模型
 
-四个类，字段与拾光课程的 `CourseImportExport` 一一对应。
+六个类，字段与拾光课程的 `CourseImportExport` 一一对应。
 
 | Dart | 对应 Kotlin | 说明 |
 |---|---|---|
@@ -55,6 +55,12 @@ dart run example/main.dart 你的课表.html --json
 | `CourseConfig` | `CourseConfigJsonModel` | 学期配置 |
 | `TimeSlot` | `TimeSlotJsonModel` | 一个节次的作息时间 |
 | `CourseImportResult` | `CourseTableImportModel` | 一次解析的完整产出 |
+| `ComboSchedule` | `ComboScheduleJsonModel` | 组合作息方案（可选扩展） |
+| `PublicScheduleTemplate` | `PublicScheduleTemplateJsonModel` | 组合作息下的公共作息模板 |
+
+`Course.credit`（学分）与 `CourseImportResult.comboSchedule`（组合作息）是
+**直通字段**：解析器不会产出它们——HTML 课表通常既不写学分，也不携带作息方案——
+但 `fromJson` / `toJson` 会原样保留，保证线格式往返不丢数据。
 
 ### 三条会咬人的不变量
 

@@ -32,6 +32,7 @@ void main() {
       expect(base, isNot(equals(Course(name: 'x', day: 2, weeks: <int>[1]))));
       expect(base, isNot(equals(Course(name: 'x', day: 1, weeks: <int>[2]))));
       expect(base, isNot(equals(Course(name: 'x', day: 1, weeks: <int>[1], teacher: '张伟'))));
+      expect(base, isNot(equals(Course(name: 'x', day: 1, weeks: <int>[1], credit: 3.0))));
     });
 
     test('intListsEqual 对 null 安全的长度比较', () {
@@ -42,11 +43,12 @@ void main() {
     });
 
     test('copyWith 保留未指定字段', () {
-      final a = Course(name: 'x', day: 1, teacher: '张伟', weeks: <int>[1, 2]);
+      final a = Course(name: 'x', day: 1, teacher: '张伟', weeks: <int>[1, 2], credit: 3.0);
       final b = a.copyWith(position: '教101');
       expect(b.name, 'x');
       expect(b.teacher, '张伟');
       expect(b.weeks, <int>[1, 2]);
+      expect(b.credit, 3.0);
       expect(b.position, '教101');
     });
 

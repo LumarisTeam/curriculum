@@ -17,6 +17,7 @@ void main() {
         weeks: <int>[1, 2, 3],
         color: 3,
         remark: '原始文本',
+        credit: 3.5,
       );
       expect(Course.fromJson(course.toJson()), equals(course));
     });
@@ -27,6 +28,7 @@ void main() {
       expect(json.containsKey('id'), isFalse);
       expect(json.containsKey('color'), isFalse);
       expect(json.containsKey('remark'), isFalse);
+      expect(json.containsKey('credit'), isFalse);
       expect(json['customStartTime'], isNull);
       expect(json['weeks'], isEmpty);
       // 这些字段即使为 null 也保留，与上游 Kotlin 模型一致。
@@ -96,6 +98,28 @@ void main() {
       expect(round.customStartTime, '08:00');
       expect(round.customEndTime, '09:00');
       expect(round.startSection, isNull);
+    });
+
+    test('credit 接受整数、浮点与数字字符串', () {
+      expect(Course.fromJson(<String, dynamic>{'name': 'x', 'day': 1, 'credit': 3}).credit, 3.0);
+      expect(Course.fromJson(<String, dynamic>{'name': 'x', 'day': 1, 'credit': 3.5}).credit, 3.5);
+      expect(
+        Course.fromJson(<String, dynamic>{'name': 'x', 'day': 1, 'credit': '2.5'}).credit,
+        2.5,
+      );
+      expect(
+        Course.fromJson(<String, dynamic>{'name': 'x', 'day': 1, 'credit': 'n/a'}).credit,
+        isNull,
+      );
+    });
+
+    test('credit 能往返', () {
+      final course = Course(name: '高等数学A', day: 1, credit: 4.5);
+      final round = Course.fromJson(
+        jsonDecode(jsonEncode(course.toJson())) as Map<String, dynamic>,
+      );
+      expect(round.credit, 4.5);
+      expect(round, equals(course));
     });
   });
 }

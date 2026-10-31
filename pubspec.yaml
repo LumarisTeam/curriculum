@@ -2,7 +2,7 @@ name: curriculum
 description: >-
   纯 Dart 的中国高校教务系统课表 HTML 解析库，产出对齐拾光课程表
   CourseImportExport 线格式的结构化课程数据。
-version: 0.1.0
+version: 0.2.0
 repository: https://github.com/lijiajunply/curriculum
 issue_tracker: https://github.com/lijiajunply/curriculum/issues
 

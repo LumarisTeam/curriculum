@@ -23,8 +23,9 @@ void main() {
       );
 
       final json = jsonDecode(result.toJsonString()) as Map<String, dynamic>;
-      expect(json.keys.toSet(), <String>{'courses', 'timeSlots', 'config'});
+      expect(json.keys.toSet(), <String>{'courses', 'timeSlots', 'config', 'comboSchedule'});
       expect(json['config'], isNull);
+      expect(json['comboSchedule'], isNull);
 
       final courses = json['courses']! as List<dynamic>;
       expect(courses, hasLength(1));
@@ -66,6 +67,19 @@ void main() {
         ],
         timeSlots: <TimeSlot>[const TimeSlot(number: 2, startTime: '09:00', endTime: '09:45')],
         config: const CourseConfig(semesterTotalWeeks: 16),
+        comboSchedule: ComboSchedule(
+          name: '冬夏作息',
+          publicSchedules: <PublicScheduleTemplate>[
+            PublicScheduleTemplate(
+              name: '夏季作息',
+              startDate: '2026-05-01',
+              endDate: '2026-09-30',
+              timeSlots: const <TimeSlot>[
+                TimeSlot(number: 1, startTime: '08:00', endTime: '08:45'),
+              ],
+            ),
+          ],
+        ),
       );
       final round = CourseImportResult.fromJson(
         jsonDecode(result.toJsonString()) as Map<String, dynamic>,
@@ -73,6 +87,7 @@ void main() {
       expect(round.courses, equals(result.courses));
       expect(round.timeSlots, equals(result.timeSlots));
       expect(round.config, equals(result.config));
+      expect(round.comboSchedule, equals(result.comboSchedule));
     });
 
     test('courses 列表不可变', () {

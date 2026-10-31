@@ -33,6 +33,7 @@ class Course {
     this.customEndTime,
     this.color,
     this.remark,
+    this.credit,
   }) : weeks = _normalizeWeeks(weeks),
        assert(day >= 1 && day <= 7, 'day 必须在 1..7（周一..周日）'),
        assert(startSection == null || startSection >= 1, 'startSection 必须 >= 1'),
@@ -55,6 +56,7 @@ class Course {
     customEndTime: json.asStringOrNull('customEndTime'),
     color: json.asIntOrNull('color'),
     remark: json.asStringOrNull('remark'),
+    credit: json.asDoubleOrNull('credit'),
   );
 
   /// 课程唯一标识；为 null 时由宿主分配。
@@ -96,6 +98,12 @@ class Course {
   /// 备注；[ParseOptions.keepRawCellText] 开启时存放单元格原文。
   final String? remark;
 
+  /// 课程学分。
+  ///
+  /// 对齐拾光课程表 `ImportCourseJsonModel.credit`。HTML 课表通常不写学分，
+  /// 因此解析器恒为 null；该字段只为线格式往返与宿主赋值而存在。
+  final double? credit;
+
   /// 本课程跨越的节次数。
   int get sectionCount =>
       (startSection != null && endSection != null) ? endSection! - startSection! + 1 : 1;
@@ -117,6 +125,7 @@ class Course {
     'customEndTime': customEndTime,
     if (color != null) 'color': color,
     if (remark != null) 'remark': remark,
+    if (credit != null) 'credit': credit,
   };
 
   /// 返回一个替换了部分字段的副本。
@@ -134,6 +143,7 @@ class Course {
     String? customEndTime,
     int? color,
     String? remark,
+    double? credit,
   }) => Course(
     id: id ?? this.id,
     name: name ?? this.name,
@@ -148,6 +158,7 @@ class Course {
     customEndTime: customEndTime ?? this.customEndTime,
     color: color ?? this.color,
     remark: remark ?? this.remark,
+    credit: credit ?? this.credit,
   );
 
   static List<int> _normalizeWeeks(Iterable<int> weeks) {
@@ -171,7 +182,8 @@ class Course {
       other.customStartTime == customStartTime &&
       other.customEndTime == customEndTime &&
       other.color == color &&
-      other.remark == remark;
+      other.remark == remark &&
+      other.credit == credit;
 
   @override
   int get hashCode => Object.hash(
@@ -188,6 +200,7 @@ class Course {
     customEndTime,
     color,
     remark,
+    credit,
   );
 
   @override

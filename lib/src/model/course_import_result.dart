@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import '../exceptions.dart';
+import 'combo_schedule.dart';
 import 'course.dart';
 import 'course_config.dart';
+import 'json_utils.dart';
 import 'parse_warning.dart';
 import 'time_slot.dart';
 
@@ -16,6 +18,7 @@ class CourseImportResult {
     required Iterable<Course> courses,
     Iterable<TimeSlot> timeSlots = const <TimeSlot>[],
     this.config,
+    this.comboSchedule,
     Iterable<ParseWarning> warnings = const <ParseWarning>[],
     this.adapterId,
     this.stats = ParseStats.empty,
@@ -28,6 +31,7 @@ class CourseImportResult {
     final rawCourses = json['courses'];
     final rawSlots = json['timeSlots'];
     final rawConfig = json['config'];
+    final rawCombo = json.asMapOrNull('comboSchedule');
     return CourseImportResult(
       courses: rawCourses is List
           ? <Course>[
@@ -42,6 +46,7 @@ class CourseImportResult {
             ]
           : const <TimeSlot>[],
       config: rawConfig is Map ? CourseConfig.fromJson(rawConfig.cast<String, dynamic>()) : null,
+      comboSchedule: rawCombo == null ? null : ComboSchedule.fromJson(rawCombo),
     );
   }
 
@@ -57,6 +62,13 @@ class CourseImportResult {
   /// [ParseOptions.emitConfig] 时才会非空。宿主拿到非空 config 会用它覆盖用户
   /// 本地的上下课时长，所以这里不能凭空发明默认值。
   final CourseConfig? config;
+
+  /// 组合作息方案。
+  ///
+  /// 对齐拾光课程表 `CourseTableImportModel.comboSchedule`，是线格式里的可选
+  /// 扩展。解析器不会产出它（课表页面不携带作息方案），但 `fromJson` /
+  /// `toJson` 会原样保留，避免把宿主传入的数据丢掉。
+  final ComboSchedule? comboSchedule;
 
   /// 解析过程中的诊断。
   final List<ParseWarning> warnings;
@@ -81,6 +93,7 @@ class CourseImportResult {
     'courses': <Map<String, dynamic>>[for (final c in courses) c.toJson()],
     'timeSlots': <Map<String, dynamic>>[for (final t in timeSlots) t.toJson()],
     'config': config?.toJson(),
+    'comboSchedule': comboSchedule?.toJson(),
   };
 
   /// 编码为 JSON 字符串。

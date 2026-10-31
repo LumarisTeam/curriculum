@@ -26,6 +26,12 @@ extension JsonMapReader on Map<String, dynamic> {
   /// 读取整数；缺失或不可转换时返回 [fallback]。
   int asInt(String key, {int fallback = 0}) => asIntOrNull(key) ?? fallback;
 
+  /// 读取浮点数；缺失、类型不符或不可转换时返回 null。
+  double? asDoubleOrNull(String key) => coerceDouble(this[key]);
+
+  /// 读取浮点数；缺失或不可转换时返回 [fallback]。
+  double asDouble(String key, {double fallback = 0}) => asDoubleOrNull(key) ?? fallback;
+
   /// 读取布尔值；缺失或类型不符时返回 [fallback]。
   ///
   /// 字符串 `'true'` / `'false'` 会被识别，其余字符串回退。
@@ -78,6 +84,24 @@ int? coerceInt(Object? value) {
     final s = value.trim();
     if (s.isEmpty) return null;
     return int.tryParse(s) ?? double.tryParse(s)?.toInt();
+  }
+  return null;
+}
+
+/// 把任意值强制成浮点数。
+///
+/// 接受 `int`、`double`、以及可解析的数字字符串（含 `'3'`、`'3.5'`）。
+/// 非有限值（`NaN`、无穷大）与其余类型一律返回 null。
+double? coerceDouble(Object? value) {
+  if (value == null) return null;
+  if (value is double) return value.isFinite ? value : null;
+  if (value is num) {
+    final d = value.toDouble();
+    return d.isFinite ? d : null;
+  }
+  if (value is String) {
+    final parsed = double.tryParse(value.trim());
+    return (parsed != null && parsed.isFinite) ? parsed : null;
   }
   return null;
 }
