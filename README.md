@@ -45,6 +45,36 @@ dart run example/main.dart 你的课表.html
 dart run example/main.dart 你的课表.html --json
 ```
 
+## 接入 JS 适配仓库（warehouse 入口）
+
+除了内置的 Dart HTML 适配器，本包还提供 `package:curriculum/warehouse.dart`，
+用于接入拾光的 JS 适配仓库 [`shiguang_warehouse`](https://github.com/XingHeYuZhuan/shiguang_warehouse)。
+它覆盖索引解析、学校/适配器模型、搜索、Bridge 协议与导入会话状态机，但不执行
+JavaScript——WebView、Cookie、文件与网络仍由宿主负责。
+
+```dart
+import 'package:curriculum/warehouse.dart';
+
+final catalog = WarehouseCatalog.fromPbBytes(indexBytes);
+final registry = WarehouseRegistry(catalog);
+final school = registry.schoolById('CQU');
+
+// 宿主读取适配器 JS 后：
+final session = WarehouseImportSession(
+  script: WarehouseAdapterScript(adapter: school!.adapters.first, source: jsSource),
+  host: myHost, // 实现 WarehouseImportHost，映射到 WebView / 弹窗
+);
+
+await host.evaluateJavascript(session.bootstrapScript); // 页面加载后
+await host.evaluateJavascript(session.startScript);     // 用户点击导入
+// JavaScriptChannel 收到消息后：
+await session.handleMessage(rawMessage);
+final result = await session.completed; // CourseImportResult
+```
+
+设计细节与接入计划见
+[docs/warehouse-adapter-plan.md](docs/warehouse-adapter-plan.md)。
+
 ## 数据模型
 
 六个类，字段与拾光课程的 `CourseImportExport` 一一对应。
@@ -200,7 +230,8 @@ warnings: 3 (0 error, 2 warning, 1 info)
 
 ## 已知边界
 
-- **只做解析**。抓取、登录、验证码、会话保持都不在范围内。
+- **核心入口只做解析**。抓取、登录、验证码、会话保持都不在 `curriculum.dart`
+  的范围内；`warehouse.dart` 也只提供索引/协议/状态机，不执行 JS、不持有 WebView。
 - **纯 Dart 没有排版引擎**，所以不能像浏览器里的适配脚本那样用
   `getBoundingClientRect()` 判列位置。位置一律来自表格几何或元素的 `id`/`data-*`。
 - `MatrixOrientation.daysAreRows` 只适用于**真正的矩阵**（行为星期、列为节次）。

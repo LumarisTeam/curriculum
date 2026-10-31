@@ -103,6 +103,37 @@ enum ParseWarningKind {
   /// 警告数量触顶，后续同类警告不再记录。
   truncatedWarnings,
 
+  // ---- 适配仓库与 JS 适配器 ----
+  /// 仓库索引协议版本与本库支持版本不一致。
+  catalogProtocolMismatch,
+
+  /// 仓库索引里存在重复的学校或适配器 id。
+  catalogDuplicateId,
+
+  /// 仓库索引里有无法识别的类别、缺失必填字段或其它非法条目。
+  catalogInvalidEntry,
+
+  /// 适配器脚本缺失或内容为空。
+  adapterScriptMissing,
+
+  /// JS Bridge 消息格式非法。
+  bridgeMessageInvalid,
+
+  /// JS Bridge 动作执行失败。
+  bridgeActionFailed,
+
+  /// `saveImportedCourses` 的 payload 非法或部分课程被丢弃。
+  invalidCoursePayload,
+
+  /// `savePresetTimeSlots` 的 payload 非法。
+  invalidTimeSlotPayload,
+
+  /// `saveCourseConfig` 的 payload 非法。
+  invalidConfigPayload,
+
+  /// `saveComboSchedule` 的 payload 非法。
+  invalidComboSchedulePayload,
+
   /// 未归类的自定义诊断。
   custom,
 }
