@@ -1,0 +1,13 @@
+curriculum includes an implementation of the JavaScript bridge protocol and
+bridge shim used by the Shiguang timetable ecosystem.
+
+Those parts are derived from:
+
+- shiguang_warehouse — https://github.com/XingHeYuZhuan/shiguang_warehouse
+- shiguangschedule — https://github.com/XingHeYuZhuan/shiguangschedule
+
+Copyright (c) 2025 星河欲转
+
+Both upstream projects are released under the MIT License. The MIT permission
+notice is retained in this repository's LICENSE; this NOTICE records the
+upstream attribution for the derived bridge protocol.

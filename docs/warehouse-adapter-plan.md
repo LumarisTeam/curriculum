@@ -9,11 +9,11 @@
 - [x] **P0 契约与夹具**：Bridge protocol、shim、回调脚本；真实索引 fixture。
 - [x] **P1 索引与模型**：`WarehouseCatalog` / `WarehouseRegistry`、无依赖 PB 解码、JSON 入口。
 - [x] **P2 导入会话**：`WarehouseImportHost`、`WarehouseImportSession`、课程/作息/配置解码器、诊断。
-- [ ] **P3 App 接入**：`ios_club_app` 的仓库同步、WebView、Host 实现。
-- [ ] **P4 作息与周次**：动态作息表、开学日期、自定义时间、存储隔离。
+- [x] **P3 App 接入**：仓库同步/缓存、学校选择页、WebView 导入页、Host 实现、课程落库、按学期配置计算周次。
+- [ ] **P4 作息与周次**：已持久化适配器下发的作息与组合作息，尚未安装到 `TimeService`；自定义时间课程仍会跳过。
 - [ ] **P5 加固与发布**：镜像、离线兜底、灰度、文档。
 
-当前 `curriculum` 侧的测试：`dart test test/warehouse`。
+当前测试：`dart test test/warehouse`（45 个）、`flutter test test/unit/warehouse_course_mapper_test.dart`（3 个）。
 
 ---
 
