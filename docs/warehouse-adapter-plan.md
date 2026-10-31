@@ -10,10 +10,10 @@
 - [x] **P1 索引与模型**：`WarehouseCatalog` / `WarehouseRegistry`、无依赖 PB 解码、JSON 入口。
 - [x] **P2 导入会话**：`WarehouseImportHost`、`WarehouseImportSession`、课程/作息/配置解码器、诊断。
 - [x] **P3 App 接入**：仓库同步/缓存、学校选择页、WebView 导入页、Host 实现、课程落库、按学期配置计算周次。
-- [ ] **P4 作息与周次**：已持久化适配器下发的作息与组合作息，尚未安装到 `TimeService`；自定义时间课程仍会跳过。
+- [x] **P4 作息与周次**：导入作息安装到 `TimeService`；自定义时间课程映射到最近节次并保留原始 `HH:mm`；学期周次用导入配置兜底；iOS 小组件快照使用导入校区与学期。
 - [ ] **P5 加固与发布**：镜像、离线兜底、灰度、文档。
 
-当前测试：`dart test test/warehouse`（45 个）、`flutter test test/unit/warehouse_course_mapper_test.dart`（3 个）。
+当前测试：`dart test test/warehouse`（45 个）、`flutter test test/unit/warehouse_course_mapper_test.dart test/unit/time_service_imported_test.dart`（8 个）。
 
 ---
 
